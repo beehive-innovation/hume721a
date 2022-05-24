@@ -318,7 +318,11 @@ export const getEventArgs = async (
     throw new Error(`Could not find event ${eventName} at address ${address}`);
   }
 
-  return contract.interface.decodeEventLog(eventName, eventObj.data);
+  return contract.interface.decodeEventLog(
+    eventName,
+    eventObj.data,
+    eventObj.topics
+  );
 };
 
 export function BNtoInt(x: BigNumber): number {
