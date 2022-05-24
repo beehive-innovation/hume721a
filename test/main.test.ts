@@ -44,15 +44,14 @@ describe("Hume721a test", () => {
     const balanceOwner = await hume721a.balanceOf(signer1.address);
     assert(balanceOwner.eq(quantity), "wrong quantity minted");
 
-    /// I would test Transfer event using correct start token id if the event data wasn't `indexed`:
-    // const { from, to, tokenId } = await getEventArgs(
-    //   hume721a.deployTransaction,
-    //   "Transfer",
-    //   hume721a,
-    // ) as TransferEvent["args"];
-    // assert(from === ethers.constants.AddressZero, "wrong minter");
-    // assert(to === signer1.address, "wrong mintee");
-    // assert(tokenId.eq(1), "wrong start token id");
+    const { from, to, tokenId } = await getEventArgs(
+      hume721a.deployTransaction,
+      "Transfer",
+      hume721a,
+    ) as TransferEvent["args"];
+    assert(from === ethers.constants.AddressZero, "wrong minter");
+    assert(to === signer1.address, "wrong mintee");
+    assert(tokenId.eq(1), "wrong start token id");
 
     // sets vars
     assert((await hume721a.baseURI()) === baseURI, "did not set baseURI");
