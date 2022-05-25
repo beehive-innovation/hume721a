@@ -21,7 +21,7 @@ async function main() {
     const pathExampleConfig = path.resolve(__dirname, `../config/${hre.network.name}.json`);
     const config = JSON.parse(fetchFile(pathExampleConfig));
 
-    config.network = "mumbai";
+    config.network = hre.network.name;
 
     config.hume721A = hume721A.address;
     config.hume721ABlock = blockNumber;
