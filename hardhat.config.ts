@@ -33,7 +33,7 @@ const config: HardhatUserConfig = {
   solidity: {
     compilers: [
       {
-        version: "0.8.14",
+        version: "0.8.10",
         settings: {
           optimizer: {
             enabled: true,
@@ -46,7 +46,7 @@ const config: HardhatUserConfig = {
       },
     ],
   },
-  defaultNetwork: "localhost",
+  defaultNetwork: "hardhat",
   networks: {
     localhost: createLocalHostConfig(),
     hardhat: {
@@ -54,20 +54,30 @@ const config: HardhatUserConfig = {
       allowUnlimitedContractSize: true,
     },
     mumbai: {
-      url: `https://polygon-mumbai.infura.io/v3/${process.env.API_KEY}`,
-      accounts: [`0x${process.env.PRIVATE_KEY}`]
+      url: `https://polygon-mumbai.infura.io/v3/${process.env.API_KEY || ""}`,
+      accounts: [
+        `0x${
+          process.env.PRIVATE_KEY ||
+          "0000000000000000000000000000000000000000000000000000000000000000"
+        }`,
+      ],
     },
     rinkeby: {
-      url: `https://rinkeby.infura.io/v3/${process.env.API_KEY}`,
-      accounts: [`0x${process.env.PRIVATE_KEY}`]
-    }
+      url: `https://rinkeby.infura.io/v3/${process.env.API_KEY || ""}`,
+      accounts: [
+        `0x${
+          process.env.PRIVATE_KEY ||
+          "0000000000000000000000000000000000000000000000000000000000000000"
+        }`,
+      ],
+    },
   },
   mocha: {
     timeout: 600000,
   },
   etherscan: {
-    apiKey: process.env.ETHERSCAN_API_KEY
-  }
+    apiKey: process.env.ETHERSCAN_API_KEY,
+  },
 };
 
 export default config;

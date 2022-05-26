@@ -9,13 +9,14 @@ import { execSync } from "child_process";
 
 const logger = new Logger(version);
 
+import assert from "assert";
 
-export const eighteenZeros = "000000000000000000"
-export const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000"
+export const eighteenZeros = "000000000000000000";
+export const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
 
 export enum Type {
   ERC20,
-  ERC1155
+  ERC1155,
 }
 
 export enum Conditions {
@@ -32,73 +33,13 @@ export enum Rarity {
   COMMON,
   UNCOMMON,
   RARE,
-  ULTRARARE
+  ULTRARARE,
 }
 
 export enum Role {
   Admin,
-  Creator
+  Creator,
 }
-
-export enum AllStandardOps {
-  SKIP,
-  VAL,
-  DUP,
-  ZIPMAP,
-  DEBUG,
-  BLOCK_NUMBER,
-  BLOCK_TIMESTAMP,
-  SENDER,
-  THIS_ADDRESS,
-  SCALE18_MUL,
-  SCALE18_DIV,
-  SCALE18,
-  SCALEN,
-  SCALE_BY,
-  SCALE18_ONE,
-  SCALE18_DECIMALS,
-  ADD,
-  SATURATING_ADD,
-  SUB,
-  SATURATING_SUB,
-  MUL,
-  SATURATING_MUL,
-  DIV,
-  MOD,
-  EXP,
-  MIN,
-  MAX,
-  ISZERO,
-  EAGER_IF,
-  EQUAL_TO,
-  LESS_THAN,
-  GREATER_THAN,
-  EVERY,
-  ANY,
-  REPORT,
-  NEVER,
-  ALWAYS,
-  SATURATING_DIFF,
-  UPDATE_BLOCKS_FOR_TIER_RANGE,
-  SELECT_LTE,
-  IERC20_BALANCE_OF,
-  IERC20_TOTAL_SUPPLY,
-  IERC721_BALANCE_OF,
-  IERC721_OWNER_OF,
-  IERC1155_BALANCE_OF,
-  IERC1155_BALANCE_OF_BATCH,
-  length,
-}
-
-enum GameAssetsOpcode {
-  REPORT_AT_BLOCK = 0 + AllStandardOps.length,
-  ACCOUNT
-}
-export const Opcode = {
-  ...AllStandardOps,
-  ...GameAssetsOpcode,
-};
-
 
 export type Bytes = ArrayLike<number>;
 
@@ -109,14 +50,16 @@ export interface Hexable {
 }
 
 function isHexable(value: any): value is Hexable {
-  return !!(value.toHexString);
+  return !!value.toHexString;
 }
 
 export function isHexString(value: any, length?: number): boolean {
-  if (typeof (value) !== "string" || !value.match(/^0x[0-9A-Fa-f]*$/)) {
-    return false
+  if (typeof value !== "string" || !value.match(/^0x[0-9A-Fa-f]*$/)) {
+    return false;
   }
-  if (length && value.length !== 2 + 2 * length) { return false; }
+  if (length && value.length !== 2 + 2 * length) {
+    return false;
+  }
   return true;
 }
 
@@ -128,27 +71,42 @@ export type DataOptions = {
 const HexCharacters: string = "0123456789abcdef";
 
 function isInteger(value: number) {
-  return (typeof (value) === "number" && value == value && (value % 1) === 0);
+  return typeof value === "number" && value == value && value % 1 === 0;
 }
 
 export function isBytes(value: any): value is Bytes {
-  if (value == null) { return false; }
+  if (value == null) {
+    return false;
+  }
 
-  if (value.constructor === Uint8Array) { return true; }
-  if (typeof (value) === "string") { return false; }
-  if (!isInteger(value.length) || value.length < 0) { return false; }
+  if (value.constructor === Uint8Array) {
+    return true;
+  }
+  if (typeof value === "string") {
+    return false;
+  }
+  if (!isInteger(value.length) || value.length < 0) {
+    return false;
+  }
 
   for (let i = 0; i < value.length; i++) {
     const v = value[i];
-    if (!isInteger(v) || v < 0 || v >= 256) { return false; }
+    if (!isInteger(v) || v < 0 || v >= 256) {
+      return false;
+    }
   }
   return true;
 }
 
-export function hexlify(value: BytesLike | Hexable | number | bigint, options?: DataOptions): string {
-  if (!options) { options = {}; }
+export function hexlify(
+  value: BytesLike | Hexable | number | bigint,
+  options?: DataOptions
+): string {
+  if (!options) {
+    options = {};
+  }
 
-  if (typeof (value) === "number") {
+  if (typeof value === "number") {
     logger.checkSafeUint53(value, "invalid hexlify value");
 
     let hex = "";
@@ -158,24 +116,34 @@ export function hexlify(value: BytesLike | Hexable | number | bigint, options?: 
     }
 
     if (hex.length) {
-      if (hex.length % 2) { hex = "0" + hex; }
+      if (hex.length % 2) {
+        hex = "0" + hex;
+      }
       return "0x" + hex;
     }
 
     return "0x00";
   }
 
-  if (typeof (value) === "bigint") {
+  if (typeof value === "bigint") {
     value = value.toString(16);
-    if (value.length % 2) { return ("0x0" + value); }
+    if (value.length % 2) {
+      return "0x0" + value;
+    }
     return "0x" + value;
   }
 
-  if (options.allowMissingPrefix && typeof (value) === "string" && value.substring(0, 2) !== "0x") {
+  if (
+    options.allowMissingPrefix &&
+    typeof value === "string" &&
+    value.substring(0, 2) !== "0x"
+  ) {
     value = "0x" + value;
   }
 
-  if (isHexable(value)) { return value.toHexString(); }
+  if (isHexable(value)) {
+    return value.toHexString();
+  }
 
   if (isHexString(value)) {
     if ((<string>value).length % 2) {
@@ -203,20 +171,27 @@ export function hexlify(value: BytesLike | Hexable | number | bigint, options?: 
 }
 
 function addSlice(array: Uint8Array): Uint8Array {
-  if (array.slice) { return array; }
+  if (array.slice) {
+    return array;
+  }
 
   array.slice = function () {
     const args = Array.prototype.slice.call(arguments);
     return addSlice(new Uint8Array(Array.prototype.slice.apply(array, args)));
-  }
+  };
 
   return array;
 }
 
-export function arrayify(value: BytesLike | Hexable | number, options?: DataOptions): Uint8Array {
-  if (!options) { options = {}; }
+export function arrayify(
+  value: BytesLike | Hexable | number,
+  options?: DataOptions
+): Uint8Array {
+  if (!options) {
+    options = {};
+  }
 
-  if (typeof (value) === "number") {
+  if (typeof value === "number") {
     logger.checkSafeUint53(value, "invalid arrayify value");
 
     const result = [];
@@ -224,16 +199,24 @@ export function arrayify(value: BytesLike | Hexable | number, options?: DataOpti
       result.unshift(value & 0xff);
       value = parseInt(String(value / 256));
     }
-    if (result.length === 0) { result.push(0); }
+    if (result.length === 0) {
+      result.push(0);
+    }
 
     return addSlice(new Uint8Array(result));
   }
 
-  if (options.allowMissingPrefix && typeof (value) === "string" && value.substring(0, 2) !== "0x") {
+  if (
+    options.allowMissingPrefix &&
+    typeof value === "string" &&
+    value.substring(0, 2) !== "0x"
+  ) {
     value = "0x" + value;
   }
 
-  if (isHexable(value)) { value = value.toHexString(); }
+  if (isHexable(value)) {
+    value = value.toHexString();
+  }
 
   if (isHexString(value)) {
     let hex = (<string>value).substring(2);
@@ -281,8 +264,8 @@ export function bytify(
 }
 
 export function concat(items: ReadonlyArray<BytesLike>): Uint8Array {
-  const objects = items.map(item => arrayify(item));
-  const length = objects.reduce((accum, item) => (accum + item.length), 0);
+  const objects = items.map((item) => arrayify(item));
+  const length = objects.reduce((accum, item) => accum + item.length, 0);
 
   const result = new Uint8Array(length);
 
@@ -353,4 +336,23 @@ export const exec = (cmd: string): string | Buffer => {
   } catch (e) {
     throw new Error(`Failed to run command \`${cmd}\``);
   }
+};
+
+export const assertError = async (
+  f: Function,
+  s: string,
+  e: string
+): Promise<void> => {
+  let didError: boolean = false;
+  try {
+    await f();
+  } catch (err) {
+    let eString: string = err.toString();
+    assert(
+      eString.includes(s),
+      `error string ${eString} does not include ${s}`
+    );
+    didError = true;
+  }
+  assert(didError, e);
 };

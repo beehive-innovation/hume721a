@@ -49,6 +49,7 @@
   "dependencies": {
     "@nomiclabs/hardhat-waffle": "^2.0.3",
     "@openzeppelin/contracts": "^4.6.0",
-    "dotenv": "^16.0.0"
+    "dotenv": "^16.0.0",
+    "@beehiveinnovation/rain-protocol": "git+https://github.com/beehive-innovation/rain-protocol.git#e590ce7ef673224afba04c43384a278a9500500d"
   }
 }
