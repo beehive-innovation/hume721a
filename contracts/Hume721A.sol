@@ -5,28 +5,28 @@ pragma solidity 0.8.14;
 import "erc721a/contracts/ERC721A.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
+struct DeployConfig {
+    string name;
+    string symbol;
+    string baseURI;
+    uint256 quantity;
+    address recipient;
+}
+
 contract Hume721A is ERC721A, Ownable {
     string public baseURI;
 
-    event Initialize(
-        string name_,
-        string symbol_,
-        string baseURI_,
-        uint256 quantity_,
-        address owner_
-    );
+    event Initialize(DeployConfig config, address sender);
 
     event BaseURIChanged(string baseURI);
 
-    constructor(
-        string memory name_,
-        string memory symbol_,
-        string memory baseURI_,
-        uint256 quantity_
-    ) ERC721A(name_, symbol_) {
-        _safeMint(owner(), quantity_);
-        baseURI = baseURI_;
-        emit Initialize(name_, symbol_, baseURI_, quantity_, owner());
+    constructor(DeployConfig memory config_, address sender)
+        ERC721A(config_.name, config_.symbol)
+    {
+        _safeMint(config_.recipient, config_.quantity);
+        baseURI = config_.baseURI;
+        transferOwnership(sender);
+        emit Initialize(config_, sender);
     }
 
     function _startTokenId() internal view virtual override returns (uint256) {
@@ -46,7 +46,13 @@ contract Hume721A is ERC721A, Ownable {
         returns (string memory)
     {
         if (!_exists(tokenId)) revert URIQueryForNonexistentToken();
-
         return baseURI;
+    }
+
+    function airDrop(address[] memory addresses, uint256[] memory ids) public {
+        require(addresses.length == ids.length, "Invalid arrays.");
+        for (uint256 i = 0; i < ids.length; i++) {
+            safeTransferFrom(msg.sender, addresses[i], ids[i]);
+        }
     }
 }

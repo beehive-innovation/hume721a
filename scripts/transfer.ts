@@ -16,13 +16,14 @@ async function main() {
     console.log(`${addresses.length} addresses in json.`)
     const hume721A: Hume721A = await ethers.getContractAt((await artifacts.readArtifact("Hume721A")).abi, config.hume721A) as Hume721A;
    
-    assert(await hume721A.ownerOf(1) == signers[0].address, "Wrong Owner");
-    assert(await hume721A.ownerOf(25) == signers[0].address, "Wrong Owner");
-    assert(await hume721A.ownerOf(50) == signers[0].address, "Wrong Owner");
+    assert(await hume721A.ownerOf(1) == signers[0].address, "before Wrong Owner");
+    assert(await hume721A.ownerOf(25) == signers[0].address, "before Wrong Owner");
+    assert(await hume721A.ownerOf(50) == signers[0].address, "before Wrong Owner");
 
     for(let i=0; i<addresses.length; i++){
-      await hume721A.transferFrom(signers[0].address, addresses[i], i+1);
-      assert(await hume721A.ownerOf(i+1) == addresses[i], "Wrong Owner");
+      let tx = await hume721A.transferFrom(signers[0].address, addresses[i], i+1);
+      // await tx.wait();
+      // assert(await hume721A.ownerOf(i+1) == addresses[i], `Wrong Owner ${i+1}`);
     }
     
   }
