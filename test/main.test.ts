@@ -10,6 +10,7 @@ import path from "path";
 import { BigNumber } from "ethers";
 
 export let hume721a: Hume721A
+export let humeFactory: Hume721AFactory
 
 export let erc721: ReserveTokenERC721
 export let owner: SignerWithAddress, recipient: SignerWithAddress
@@ -25,7 +26,7 @@ before(async () => {
 
   const HumeFactory = await ethers.getContractFactory("Hume721AFactory");
 
-  const humeFactory = await HumeFactory.deploy() as Hume721AFactory;
+  humeFactory = await HumeFactory.deploy() as Hume721AFactory;
 
   await humeFactory.deployed();
 
@@ -42,15 +43,14 @@ before(async () => {
   const [humeAddress, sender] = await getEventArgs(tx, "NewChild", humeFactory, humeFactory.address);
 
   hume721a = await ethers.getContractAt((await (artifacts.readArtifact("Hume721A"))).abi, humeAddress, owner) as Hume721A;
-  const ERC721 = await ethers.getContractFactory("ReserveTokenERC721");
-  erc721 = await ERC721.deploy("BAYC", "Bored") as ReserveTokenERC721;
-  await erc721.deployed();
-
-
-
 })
 
 describe("Hume721a test", () => {
+  it("Should deploy Hume721Afactory",async () => {
+    assert(await humeFactory.owner() == owner.address, "Wrong factory address.")
+
+  });
+
   it("should construct correctly", async () => {
     // mints
     const balanceOwner = await hume721a.balanceOf(recipient.address);
