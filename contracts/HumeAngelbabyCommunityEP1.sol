@@ -15,7 +15,7 @@ struct ConstructorConfig {
 }
 
 struct TransferTo {
-    uint id;
+    uint256 id;
     address to;
 }
 
@@ -77,7 +77,7 @@ contract HumeAngelbabyCommunityEP1 is ERC721A, Ownable, Adminable {
     /// @param transfers_ List of ids and recipients to transfer to.
     function multiTransferToEOA(TransferTo[] calldata transfers_) external {
         address to_;
-        uint id_;
+        uint256 id_;
         for (uint256 i_ = 0; i_ < transfers_.length; i_++) {
             to_ = transfers_[i_].to;
             id_ = transfers_[i_].id;
@@ -85,7 +85,7 @@ contract HumeAngelbabyCommunityEP1 is ERC721A, Ownable, Adminable {
             // contract we skip that recipient and continue processing other
             // transfers.
             if (to_.code.length == 0) {
-                transferFrom(msg.sender, to_, i_);
+                transferFrom(msg.sender, to_, id_);
             }
         }
     }
