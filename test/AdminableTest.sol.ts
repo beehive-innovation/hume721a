@@ -59,7 +59,8 @@ describe("Adminable Functionality Test", ()=>{
         await expect(adminableContract.transferAdmin(ZERO_ADDRESS)).to.revertedWith("Adminable: new admin is the zero address");                
     });
 
-     // admin --> adminableContract2 | Am I supposed to do this ?
+     // admin --> adminableContract2 | todo Am I supposed to do this ?
+     // Same question
      it("Should be able to transfer adminShip to a Contract Address",async () => {
 
         let adminTransaction = await adminableContract.transferAdmin(adminableContract2.address);
