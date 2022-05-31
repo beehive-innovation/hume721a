@@ -95,6 +95,18 @@ describe("HumeAngelbabyCommunityEP1 Admin test", () => {
         );
     });
 
+    it("Owner should not be able to change tokenUri", async () => {
+        await expect(
+            humeAngelBaby.connect(owner).adminSetTokenURI("NEW_TOKEN_URI")
+        ).to.revertedWith("Adminable: caller is not the admin");
+    });
+
+    it("A signer that is neither Owner or Admin should not be able to change tokenUri", async () => {
+        await expect(
+            humeAngelBaby.connect(recipient).adminSetTokenURI("NEW_TOKEN_URI")
+        ).to.revertedWith("Adminable: caller is not the admin");
+    });
+
     it("Admin should be able to change owner", async () => {
         const ownerTx = await humeAngelBaby
             .connect(admin)
@@ -111,6 +123,18 @@ describe("HumeAngelbabyCommunityEP1 Admin test", () => {
         expect(newOwner).to.be.equals(new_Owner.address);
     });
 
+    it("Owner should not be able to change Owner via adminSetOwner", async () => {
+        await expect(
+            humeAngelBaby.connect(owner).adminSetOwner(new_Owner.address)
+        ).to.revertedWith("Adminable: caller is not the admin");
+    });
+
+    it("A signer that is neither Owner or Admin should not be able to change Owner via adminSetOwner", async () => {
+        await expect(
+            humeAngelBaby.connect(recipient).adminSetOwner(new_Owner.address)
+        ).to.revertedWith("Adminable: caller is not the admin");
+    });
+
     it("Admin should be able to transfer adminship", async () => {
         const adminTx = await humeAngelBaby.transferAdmin(new_Admin.address);
 
@@ -125,13 +149,17 @@ describe("HumeAngelbabyCommunityEP1 Admin test", () => {
         expect(await humeAngelBaby.admin()).to.be.equals(new_Admin.address);
     });
 
+    it("Owner should not be able to transfer adminship", async () => {
+        await expect(
+            humeAngelBaby.connect(owner).transferAdmin(new_Admin.address)
+        ).to.revertedWith("Adminable: caller is not the admin");
+    });
+
     it("Admin should be able set a new Owner when ownership has been renounced by the previous Owner", async () => {
 
         const renounceTx = await humeAngelBaby
             .connect(owner)
             .renounceOwnership()
-
-        console.log(await humeAngelBaby.owner())
 
         expect(await humeAngelBaby.owner()).to.be.equals(ethers.constants.AddressZero)
 
