@@ -1,7 +1,5 @@
 import { artifacts, ethers } from "hardhat";
-import {
-  HumeAngelbabyCommunityEP1,
-} from "../../typechain/HumeAngelbabyCommunityEP1";
+import { HumeAngelbabyCommunityEP1 } from "../../typechain/HumeAngelbabyCommunityEP1";
 import { expect } from "chai";
 
 export const checkChildIntegrity = async (angelBabyFactory, child, config) => {

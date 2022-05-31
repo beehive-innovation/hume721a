@@ -1,6 +1,4 @@
-import {
-  HumeAngelbabyCommunityEP1,
-} from "../../typechain/HumeAngelbabyCommunityEP1";
+import { HumeAngelbabyCommunityEP1 } from "../../typechain/HumeAngelbabyCommunityEP1";
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
 import { ethers } from "hardhat";
 import { expect } from "chai";

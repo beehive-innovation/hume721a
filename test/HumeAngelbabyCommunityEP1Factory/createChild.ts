@@ -1,9 +1,7 @@
 import { HumeAngelbabyCommunityEP1Factory } from "../../typechain/HumeAngelbabyCommunityEP1Factory";
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
 import { ethers } from "hardhat";
-import {
-  ConstructorConfigStruct,
-} from "../../typechain/HumeAngelbabyCommunityEP1";
+import { ConstructorConfigStruct } from "../../typechain/HumeAngelbabyCommunityEP1";
 import { getEventArgs } from "../../utils";
 import { checkChildIntegrity } from "./childIntegrity";
 
