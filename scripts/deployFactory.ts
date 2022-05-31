@@ -1,22 +1,25 @@
 import hre, { ethers } from "hardhat";
 import path from "path";
-import { fetchFile, writeFile } from "../test/utils";
+import { fetchFile, writeFile } from "../utils";
 import { HumeAngelbabyCommunityEP1 } from "../typechain/HumeAngelbabyCommunityEP1";
 import { HumeAngelbabyCommunityEP1Factory } from "../typechain/HumeAngelbabyCommunityEP1Factory";
 
 const sleep = (delay) =>
   new Promise((resolve) => setTimeout(resolve, delay * 1000));
 
-export let angelBaby: HumeAngelbabyCommunityEP1
-export let angelBabyFactory: HumeAngelbabyCommunityEP1Factory
+export let angelBaby: HumeAngelbabyCommunityEP1;
+export let angelBabyFactory: HumeAngelbabyCommunityEP1Factory;
 
 async function main() {
   const blockNumber = (await ethers.provider.getBlock("latest")).number;
 
   console.log("Deploying smartcontract");
-  const AngelbabbyFactory = await ethers.getContractFactory("HumeAngelbabyCommunityEP1Factory");
+  const AngelbabbyFactory = await ethers.getContractFactory(
+    "HumeAngelbabyCommunityEP1Factory"
+  );
 
-  angelBabyFactory = await AngelbabbyFactory.deploy() as HumeAngelbabyCommunityEP1Factory;
+  angelBabyFactory =
+    (await AngelbabbyFactory.deploy()) as HumeAngelbabyCommunityEP1Factory;
   console.log("contract deployed : ", angelBabyFactory.address);
 
   const pathExampleConfig = path.resolve(
@@ -41,7 +44,8 @@ async function main() {
   console.log("Verifying smartcontract");
   await hre.run("verify:verify", {
     address: angelBabyFactory.address,
-    contract: "contracts/HumeAngelbabyCommunityEP1Factory.sol:HumeAngelbabyCommunityEP1Factory",
+    contract:
+      "contracts/HumeAngelbabyCommunityEP1Factory.sol:HumeAngelbabyCommunityEP1Factory",
     constructorArguments: [],
   });
 }
