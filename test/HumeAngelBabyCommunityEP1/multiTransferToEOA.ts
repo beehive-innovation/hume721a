@@ -175,7 +175,7 @@ describe("multiTransferToEOA test", () => {
     expect(await humeAngelBaby.balanceOf(admin.address)).to.equals(quantity);
   });
 
-  it("Should allow partial aidrops", async () => {
+  it("Should allow partial airdrops", async () => {
     const transferTo: TransferToStruct[] = [];
     for (let i = 1; i <= quantity; i++) {
       transferTo.push({
