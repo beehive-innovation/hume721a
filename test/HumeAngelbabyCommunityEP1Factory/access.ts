@@ -53,41 +53,41 @@ it("Owner should be able to create child", async () => {
       angelBabyFactory
     );
 
-    // angelBaby = (await ethers.getContractAt(
-    //   (
-    //     await artifacts.readArtifact("HumeAngelbabyCommunityEP1")
-    //   ).abi,
-    //   child
-    // )) as HumeAngelbabyCommunityEP1;
+    angelBaby = (await ethers.getContractAt(
+      (
+        await artifacts.readArtifact("HumeAngelbabyCommunityEP1")
+      ).abi,
+      child
+    )) as HumeAngelbabyCommunityEP1;
 
-    // expect(await angelBabyFactory.isChild(child)).to.be.true;
-    // expect(sender).to.equals(angelBabyFactory.address);
-    // expect(angelBaby.address).to.equals(child);
-    // expect(await angelBaby.owner()).to.equals(
-    //   owner.address,
-    //   `Owner is ${angelBaby.owner()} not ${owner.address}`
-    // );
-    // expect(await angelBaby.admin()).to.equals(
-    //   admin.address,
-    //   `admin is ${angelBaby.admin()} not ${admin.address}`
-    // );
-    // expect(await angelBaby.name()).to.equals(
-    //   config.name,
-    //   `name is ${angelBaby.name()} not ${config.name}`
-    // );
-    // expect(await angelBaby.symbol()).to.equals(
-    //   config.symbol,
-    //   `symbol is ${angelBaby.symbol()} not ${config.symbol}`
-    // );
-    // expect(await angelBaby.tokenURI(1)).to.equals(
-    //   config.tokenURI,
-    //   `tokenURI is ${angelBaby.tokenURI(2)} not ${config.tokenURI}`
-    // );
-    // expect(await angelBaby.totalSupply()).to.equals(
-    //   config.quantity,
-    //   `totalSupply is ${angelBaby.totalSupply()} not ${config.quantity}`
-    // );
+    expect(await angelBabyFactory.isChild(child)).to.be.true;
+    expect(sender).to.equals(angelBabyFactory.address);
+    expect(angelBaby.address).to.equals(child);
+    expect(await angelBaby.owner()).to.equals(
+      owner.address,
+      `Owner is ${angelBaby.owner()} not ${owner.address}`
+    );
+    expect(await angelBaby.admin()).to.equals(
+      admin.address,
+      `admin is ${angelBaby.admin()} not ${admin.address}`
+    );
+    expect(await angelBaby.name()).to.equals(
+      config.name,
+      `name is ${angelBaby.name()} not ${config.name}`
+    );
+    expect(await angelBaby.symbol()).to.equals(
+      config.symbol,
+      `symbol is ${angelBaby.symbol()} not ${config.symbol}`
+    );
+    expect(await angelBaby.tokenURI(1)).to.equals(
+      config.tokenURI,
+      `tokenURI is ${angelBaby.tokenURI(2)} not ${config.tokenURI}`
+    );
+    expect(await angelBaby.totalSupply()).to.equals(
+      config.quantity,
+      `totalSupply is ${angelBaby.totalSupply()} not ${config.quantity}`
+    );
 
-    // expect(await angelBaby.ownerOf(1)).to.equals(admin.address);
-    // expect(await angelBaby.ownerOf(config.quantity)).to.equals(admin.address);
+    expect(await angelBaby.ownerOf(1)).to.equals(admin.address);
+    expect(await angelBaby.ownerOf(config.quantity)).to.equals(admin.address);
   });
