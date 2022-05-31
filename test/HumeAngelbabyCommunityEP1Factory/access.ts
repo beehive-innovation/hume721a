@@ -17,7 +17,7 @@ let newFactoryOwner: SignerWithAddress;
 export let angelBabyFactory: HumeAngelbabyCommunityEP1Factory;
 export let angelBaby: HumeAngelbabyCommunityEP1;
 
-before(async () => {
+beforeEach(async () => {
   const signers = await ethers.getSigners();
   admin = signers[0];
   owner = signers[1];
@@ -31,9 +31,45 @@ before(async () => {
   angelBabyFactory = (await AngelbabyFactory.connect(
     factoryOwner
   ).deploy()) as HumeAngelbabyCommunityEP1Factory;
+
+  expect(angelBabyFactory.address).to.be.not.null;
 });
 
-it("Owner should be able to create child", async () => {
+it("HumeAngelbabyCommunityEP1Factory should be owned by Owner", async () => {
+  expect(await angelBabyFactory.owner()).to.equals(factoryOwner.address);
+});
+
+it("Should transfer the ownership to another address.", async () => {
+  const ownershipTransferTx = await angelBabyFactory
+    .connect(factoryOwner)
+    .transferOwnership(newFactoryOwner.address);
+
+  const { previousOwner, newOwner } = await getEventArgs(
+    ownershipTransferTx,
+    "OwnershipTransferred",
+    angelBabyFactory
+  );
+
+  expect(await angelBabyFactory.owner()).to.equals(newFactoryOwner.address);
+  expect(previousOwner).to.equals(factoryOwner.address);
+  expect(newOwner).to.equals(newFactoryOwner.address);
+});
+
+it("Should fail to transfer ownerShip by non-owner address", async () => {
+  await expect(
+    angelBabyFactory
+      .connect(newFactoryOwner)
+      .transferOwnership(factoryOwner.address)
+  ).to.revertedWith("Ownable: caller is not the owner");
+});
+
+it("Should fail to create a child using createChild() by non owner address", async () => {
+  await expect(
+    angelBabyFactory.connect(factoryOwner).createChild(newFactoryOwner.address)
+  ).to.revertedWith("Ownable: caller is not the owner");
+});
+
+it("Owner should be able to create child typed", async () => {
   const config: ConstructorConfigStruct = {
     name: "ANGELBABY",
     symbol: "AGBB",

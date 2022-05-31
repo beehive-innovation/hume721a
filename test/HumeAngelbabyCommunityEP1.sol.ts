@@ -46,48 +46,6 @@ before(async () => {
 });
 
 describe("HumeAngelbabyCommunityEP1 test", () => {
-  describe("HumeAngelbabyCommunityEP1Factory Owner test", () => {
-    it("Should deploy HumeAngelbabyCommunityEP1Factory", async () => {
-      expect(angelBabyFactory.address).to.be.not.null;
-    });
-
-    it("HumeAngelbabyCommunityEP1Factory should be owned by Admin", async () => {
-      expect(await angelBabyFactory.owner()).to.equals(factoryOwner.address);
-    });
-
-    it("Should transfer the ownership to another address.", async () => {
-      const ownershipTransferTx = await angelBabyFactory
-        .connect(factoryOwner)
-        .transferOwnership(newFactoryOwner.address);
-
-      const { previousOwner, newOwner } = await getEventArgs(
-        ownershipTransferTx,
-        "OwnershipTransferred",
-        angelBabyFactory
-      );
-
-      expect(await angelBabyFactory.owner()).to.equals(newFactoryOwner.address);
-      expect(previousOwner).to.equals(factoryOwner.address);
-      expect(newOwner).to.equals(newFactoryOwner.address);
-    });
-
-    it("Should fail to transfer ownerShip by non-owner address", async () => {
-      await expect(
-        angelBabyFactory
-          .connect(factoryOwner)
-          .transferOwnership(factoryOwner.address)
-      ).to.revertedWith("Ownable: caller is not the owner");
-    });
-
-    it("Should fail to create a child using createChild() by non owner address", async () => {
-      await expect(
-        angelBabyFactory
-          .connect(factoryOwner)
-          .createChild(newFactoryOwner.address)
-      ).to.revertedWith("Ownable: caller is not the owner");
-    });
-  });
-
   describe("HumeAngelbabyCommunityEP1 Owner test", () => {
     it("Owner should not be able to change TokenURI", async () => {
       await expect(
