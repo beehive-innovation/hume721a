@@ -18,7 +18,7 @@ let factoryOwner: SignerWithAddress;
 let newFactoryOwner: SignerWithAddress;
 
 let config: ConstructorConfigStruct;
-let reference: Contract;
+let encodedConfig;
 
 beforeEach(async () => {
   const signers = await ethers.getSigners();
@@ -44,14 +44,11 @@ beforeEach(async () => {
     admin: admin.address,
     owner: owner.address,
   };
-
-  const referenceAbi = (
-    await artifacts.readArtifact("HumeAngelbabyCommunityEP1Factory")
-  ).abi;
-  reference = new Contract(
-    ethers.constants.AddressZero,
-    referenceAbi,
-    owner
+  encodedConfig = ethers.utils.defaultAbiCoder.encode(
+    [
+      "tuple(string name, string symbol, string tokenURI, uint256 quantity, address admin, address owner)",
+    ],
+    [config]
   );
 });
 
@@ -67,7 +64,7 @@ it("Owner should be able to create child", async () => {
 
   const createChildTx = await angelBabyFactory
     .connect(factoryOwner)
-    .createChild(ethers.utils.AbiCoder.encode([config]));
+    .createChild(encodedConfig);
 
   const { sender, child } = await getEventArgs(
     createChildTx,
@@ -81,10 +78,6 @@ it("Owner should be able to create child", async () => {
 
 it("Should fail to create a child using createChild() by non owner address", async () => {
   await expect(
-    angelBabyFactory
-      .connect(owner)
-      .createChild(
-        reference.interface.encodeFunctionData("createChildTyped", [config])
-      )
+    angelBabyFactory.connect(owner).createChild(encodedConfig)
   ).to.revertedWith("Ownable: caller is not the owner");
 });
