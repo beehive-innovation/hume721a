@@ -7,8 +7,8 @@ import { HumeAngelbabyCommunityEP1Factory } from "../typechain/HumeAngelbabyComm
 const sleep = (delay) =>
   new Promise((resolve) => setTimeout(resolve, delay * 1000));
 
-export let angelBaby: HumeAngelbabyCommunityEP1
-export let angelBabyFactory: HumeAngelbabyCommunityEP1Factory
+export let angelBaby: HumeAngelbabyCommunityEP1;
+export let angelBabyFactory: HumeAngelbabyCommunityEP1Factory;
 
 async function main() {
   const pathExampleConfig = path.resolve(
@@ -17,7 +17,12 @@ async function main() {
   );
   const deployConfig = JSON.parse(fetchFile(pathExampleConfig));
 
-  angelBabyFactory = await ethers.getContractAt((await artifacts.readArtifact("HumeAngelbabyCommunityEP1Factory")).abi, deployConfig.angelBabyFactory) as HumeAngelbabyCommunityEP1Factory;
+  angelBabyFactory = (await ethers.getContractAt(
+    (
+      await artifacts.readArtifact("HumeAngelbabyCommunityEP1Factory")
+    ).abi,
+    deployConfig.angelBabyFactory
+  )) as HumeAngelbabyCommunityEP1Factory;
 
   const config = {
     name: "ANGELBABY",
@@ -25,14 +30,14 @@ async function main() {
     tokenURI: "OLD_TOKEN_URI",
     quantity: 50,
     admin: "0xB77d30571fc6C253e645584D4deEF40c139A7900",
-    owner: "0x36c0903Ad6D564F335333344Fab68ebCf736F629"
-  }
+    owner: "0x36c0903Ad6D564F335333344Fab68ebCf736F629",
+  };
 
-  let trx = await angelBabyFactory.createChildTyped(config);
+  const trx = await angelBabyFactory.createChildTyped(config);
 
-  await trx.wait()
+  await trx.wait();
 
-  const { sender, child } = await getEventArgs(trx, "NewChild", angelBabyFactory);
+  const { child } = await getEventArgs(trx, "NewChild", angelBabyFactory);
 
   console.log(`AngelBaby Contract deployed at : ${child}`);
 
@@ -41,7 +46,8 @@ async function main() {
   console.log("Verifying smartcontract");
   await hre.run("verify:verify", {
     address: child,
-    contract: "contracts/HumeAngelbabyCommunityEP1.sol:HumeAngelbabyCommunityEP1",
+    contract:
+      "contracts/HumeAngelbabyCommunityEP1.sol:HumeAngelbabyCommunityEP1",
     constructorArguments: [config],
   });
 }
