@@ -48,6 +48,7 @@ contract HumeAngelbabyCommunityEP1 is ERC721A, Ownable, Adminable {
     /// Token constructor.
     /// Assigns owner and admin roles, mints all tokens for the admin and sets
     /// initial token URI.
+    /// @param config_ All construction config.
     constructor(ConstructorConfig memory config_)
         ERC721A(config_.name, config_.symbol)
     {

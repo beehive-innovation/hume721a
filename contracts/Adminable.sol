@@ -18,6 +18,9 @@ abstract contract Adminable {
     /// Singleton admin address. Analogous to Open Zeppelin owner.
     address public admin;
 
+    /// Admin was transferred to a new address.
+    /// @param previousAdmin The admin initiating the transfer, losing admin.
+    /// @param newAdmin The address newly receiving/becoming admin.
     event AdminTransferred(address indexed previousAdmin, address indexed newAdmin);
 
     /// Throws if called by any account other than the admin.
@@ -28,6 +31,7 @@ abstract contract Adminable {
 
     /// Transfers admin of the contract to a new account (`newAdmin`).
     /// Can only be called by the current admin.
+    /// @param newAdmin_ The new admin address.
     function transferAdmin(address newAdmin_) external onlyAdmin {
         require(newAdmin_ != address(0), "Adminable: new admin is the zero address");
         _transferAdmin(newAdmin_);
@@ -35,6 +39,7 @@ abstract contract Adminable {
 
     /// Transfers admin of the contract to a new account (`newAdmin`).
     /// Internal function without access restriction.
+    /// @param newAdmin_ The new admin address.
     function _transferAdmin(address newAdmin_) internal {
         address oldAdmin_ = admin;
         admin = newAdmin_;
