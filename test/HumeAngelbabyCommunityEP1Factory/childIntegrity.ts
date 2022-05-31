@@ -1,12 +1,11 @@
 import { artifacts, ethers } from "hardhat";
 import {
-  ConstructorConfigStruct,
   HumeAngelbabyCommunityEP1,
 } from "../../typechain/HumeAngelbabyCommunityEP1";
 import { expect } from "chai";
 
 export const checkChildIntegrity = async (angelBabyFactory, child, config) => {
-  let angelBaby = (await ethers.getContractAt(
+  const angelBaby = (await ethers.getContractAt(
     (
       await artifacts.readArtifact("HumeAngelbabyCommunityEP1")
     ).abi,

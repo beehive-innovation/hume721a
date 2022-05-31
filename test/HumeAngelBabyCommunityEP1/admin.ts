@@ -60,7 +60,7 @@ describe("HumeAngelbabyCommunityEP1 Admin test", () => {
             .connect(factoryOwner)
             .createChildTyped(config);
 
-        const { sender, child } = await getEventArgs(
+        const { child } = await getEventArgs(
             createChildTx,
             "NewChild",
             angelBabyFactory
@@ -157,13 +157,13 @@ describe("HumeAngelbabyCommunityEP1 Admin test", () => {
 
     it("Admin should be able set a new Owner when ownership has been renounced by the previous Owner", async () => {
 
-        const renounceTx = await humeAngelBaby
+        await humeAngelBaby
             .connect(owner)
             .renounceOwnership()
 
         expect(await humeAngelBaby.owner()).to.be.equals(ethers.constants.AddressZero)
 
-        const ownerTx = await humeAngelBaby
+        await humeAngelBaby
             .connect(admin)
             .adminSetOwner(new_Owner.address);
 

@@ -39,7 +39,7 @@ before(async () => {
 describe("multiTransferToEOA test", () => {
     let humeAngelBaby: HumeAngelbabyCommunityEP1;
     let config: ConstructorConfigStruct;
-    let addresses: string[] = []
+    const addresses: string[] = []
     let quantity: number
 
     beforeEach(async () => {
@@ -56,7 +56,7 @@ describe("multiTransferToEOA test", () => {
             .connect(factoryOwner)
             .createChildTyped(config);
 
-        const { sender, child } = await getEventArgs(
+        const { child } = await getEventArgs(
             createChildTx,
             "NewChild",
             angelBabyFactory
@@ -87,7 +87,7 @@ describe("multiTransferToEOA test", () => {
             });
         }
 
-        const transferTx = await humeAngelBaby
+        await humeAngelBaby
             .connect(admin)
             .multiTransferToEOA(transferTo);
 
@@ -112,7 +112,7 @@ describe("multiTransferToEOA test", () => {
             });
         }
 
-        const transferTx = await humeAngelBaby
+        await humeAngelBaby
             .connect(admin)
             .multiTransferToEOA(transferTo);
 
@@ -169,7 +169,7 @@ describe("multiTransferToEOA test", () => {
             });
         }
 
-        const transferTx = await humeAngelBaby
+        await humeAngelBaby
             .connect(admin)
             .multiTransferToEOA(transferTo);
 
@@ -179,7 +179,7 @@ describe("multiTransferToEOA test", () => {
 
     it("Should have no effect when passing an empty array of TransferTos", async () => {
         const transferTo: TransferToStruct[] = [];
-        const transferTx = await humeAngelBaby
+        await humeAngelBaby
             .connect(admin)
             .multiTransferToEOA(transferTo);
 
@@ -197,13 +197,13 @@ describe("multiTransferToEOA test", () => {
 
         // Airdrop to the first half of the list
         const firstHalf = transferTo.slice(0, Math.ceil(transferTo.length / 2))
-        const transferTx = await humeAngelBaby
+        await humeAngelBaby
             .connect(admin)
             .multiTransferToEOA(firstHalf);
 
         // Airdrop to the second half of the list
         const secondHalf = transferTo.slice(-Math.ceil(transferTo.length / 2))
-        const transferTx2 = await humeAngelBaby
+        await humeAngelBaby
             .connect(admin)
             .multiTransferToEOA(secondHalf);
 
@@ -227,7 +227,7 @@ describe("multiTransferToEOA test", () => {
 
         // Airdrop to the first half of the list
         const firstHalf = transferTo.slice(0, Math.ceil(transferTo.length / 2))
-        const transferTx = await humeAngelBaby
+        await humeAngelBaby
             .connect(admin)
             .multiTransferToEOA(firstHalf);
 

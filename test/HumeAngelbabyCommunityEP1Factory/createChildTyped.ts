@@ -5,7 +5,7 @@ import {
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
 import { HumeAngelbabyCommunityEP1Factory } from "../../typechain/HumeAngelbabyCommunityEP1Factory";
 import { getEventArgs } from "../../utils";
-import { artifacts, ethers } from "hardhat";
+import { ethers } from "hardhat";
 import { expect } from "chai";
 import { checkChildIntegrity } from "./childIntegrity";
 

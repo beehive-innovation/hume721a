@@ -1,11 +1,9 @@
 import { HumeAngelbabyCommunityEP1Factory } from "../../typechain/HumeAngelbabyCommunityEP1Factory";
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
-import { artifacts, ethers } from "hardhat";
+import { ethers } from "hardhat";
 import {
   ConstructorConfigStruct,
-  HumeAngelbabyCommunityEP1,
 } from "../../typechain/HumeAngelbabyCommunityEP1";
-import { Contract } from "ethers";
 import { getEventArgs } from "../../utils";
 import { checkChildIntegrity } from "./childIntegrity";
 
@@ -15,7 +13,6 @@ export let angelBabyFactory: HumeAngelbabyCommunityEP1Factory;
 let admin: SignerWithAddress;
 let owner: SignerWithAddress;
 let factoryOwner: SignerWithAddress;
-let newFactoryOwner: SignerWithAddress;
 
 let config: ConstructorConfigStruct;
 let encodedConfig;
@@ -25,7 +22,6 @@ beforeEach(async () => {
   admin = signers[0];
   owner = signers[1];
   factoryOwner = signers[3];
-  newFactoryOwner = signers[4];
 
   const AngelbabyFactory = await ethers.getContractFactory(
     "HumeAngelbabyCommunityEP1Factory"
