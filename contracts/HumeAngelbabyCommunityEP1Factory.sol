@@ -13,7 +13,10 @@ contract HumeAngelbabyCommunityEP1Factory is Factory, Ownable {
         returns (address child_)
     {
         require(
-            msg.sender == owner() || msg.sender == address(this),
+            // Called internally via `createChild`.
+            msg.sender == owner() ||
+            // Called externally via `createChildTyped`.
+            msg.sender == address(this),
             "Ownable: caller is not the owner"
         );
         ConstructorConfig memory config_ = abi.decode(
