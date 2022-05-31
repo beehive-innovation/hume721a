@@ -39,7 +39,7 @@ async function main() {
 
   const { child } = await getEventArgs(trx, "NewChild", angelBabyFactory);
 
-  console.log(`AngelBaby Contract deployed at : ${child}`);
+  console.log(`Angelbaby Contract deployed at : ${child}`);
 
   await sleep(30);
 

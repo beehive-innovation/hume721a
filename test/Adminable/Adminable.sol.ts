@@ -1,8 +1,8 @@
 import { ethers } from "hardhat";
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
-import { AdminableTest } from "../typechain/AdminableTest";
+import { AdminableTest } from "../../typechain/AdminableTest";
 import { expect } from "chai";
-import { getEventArgs } from "../utils";
+import { getEventArgs } from "../../utils";
 
 export let adminableContract: AdminableTest;
 export let adminableContract2: AdminableTest;

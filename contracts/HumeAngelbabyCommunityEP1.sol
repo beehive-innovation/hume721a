@@ -5,6 +5,13 @@ import "erc721a/contracts/ERC721A.sol";
 import "./Adminable.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
+/// Everything required for construction.
+/// @param name The ERC721 name.
+/// @param symbol The ERC721 symbol.
+/// @param tokenURI The initial ERC721 tokenURI (can be modified by admin).
+/// @param quantity The number of tokens to mint on construction.
+/// @param admin The initial admin address (onchain administration).
+/// @param owner The initial owner address (offchain administration).
 struct ConstructorConfig {
     string name;
     string symbol;
@@ -14,6 +21,9 @@ struct ConstructorConfig {
     address owner;
 }
 
+/// A single recipient of `multiTransferToEOA`.
+/// @param id ERC721 id to transfer.
+/// @param to recipient of the transfer.
 struct TransferTo {
     uint256 id;
     address to;
@@ -38,6 +48,7 @@ contract HumeAngelbabyCommunityEP1 is ERC721A, Ownable, Adminable {
     /// Token constructor.
     /// Assigns owner and admin roles, mints all tokens for the admin and sets
     /// initial token URI.
+    /// @param config_ All construction config.
     constructor(ConstructorConfig memory config_)
         ERC721A(config_.name, config_.symbol)
     {
@@ -48,12 +59,15 @@ contract HumeAngelbabyCommunityEP1 is ERC721A, Ownable, Adminable {
         // Mint all tokens for the admin.
         _safeMint(config_.admin, config_.quantity);
 
+        // Set URI.
         _tokenURI = config_.tokenURI;
+
+        // Inform the world.
         emit Construct(msg.sender, config_);
     }
 
     /// Admin MAY set a new token URI at any time.
-    /// @param tokenURI_ The new token URI for all tokens.
+    /// @param tokenURI_ The new token URI for ALL tokens.
     function adminSetTokenURI(string memory tokenURI_) external onlyAdmin {
         _tokenURI = tokenURI_;
         emit TokenURI(msg.sender, tokenURI_);
@@ -99,6 +113,7 @@ contract HumeAngelbabyCommunityEP1 is ERC721A, Ownable, Adminable {
     /// IDs as all metadata for all tokens is identical. WILL error as per spec
     /// if called for a nonexistant tokenID_.
     /// @inheritdoc ERC721A
+    //slither-disable-next-line external-function
     function tokenURI(uint256 tokenId_)
         public
         view

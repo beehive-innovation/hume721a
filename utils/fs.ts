@@ -9,7 +9,7 @@ export const fetchFile = (_path: string): string => {
   }
 };
 
-export const writeFile = (_path: string, file: any): void => {
+export const writeFile = (_path: string, file: string): void => {
   try {
     fs.writeFileSync(_path, file);
   } catch (error) {

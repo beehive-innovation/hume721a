@@ -4,9 +4,11 @@ pragma solidity ^0.8.0;
 import "./HumeAngelbabyCommunityEP1.sol";
 import "@beehiveinnovation/rain-protocol/contracts/factory/Factory.sol";
 
+/// @title HumeAngelbabyCommunityEP1Factory
+/// @notice Standard non-cloning Rain Factory with additional ownership access
+/// control as per Open Zeppelin. Only owner may create children. The factory
+/// owner is distinct from the owners/admins passed as config to the children.
 contract HumeAngelbabyCommunityEP1Factory is Factory, Ownable {
-    mapping(address => bool) private contracts;
-
     /// @inheritdoc Factory
     function _createChild(bytes calldata data_)
         internal
@@ -14,45 +16,18 @@ contract HumeAngelbabyCommunityEP1Factory is Factory, Ownable {
         override
         returns (address child_)
     {
+        require(
+            // Called internally via `createChild`.
+            msg.sender == owner() ||
+            // Called externally via `createChildTyped`.
+            msg.sender == address(this),
+            "Ownable: caller is not the owner"
+        );
         ConstructorConfig memory config_ = abi.decode(
             data_,
             (ConstructorConfig)
         );
         child_ = address(new HumeAngelbabyCommunityEP1(config_));
-    }
-
-    /// @inheritdoc Factory
-    function createChild(bytes calldata data_)
-        external
-        virtual
-        override
-        nonReentrant
-        returns (address)
-    {
-        require(
-            msg.sender == owner() || msg.sender == address(this),
-            "Ownable: caller is not the owner"
-        );
-        // Create child contract using hook.
-        address child_ = _createChild(data_);
-        // Ensure the child at this address has not previously been deployed.
-        require(!contracts[child_], "DUPLICATE_CHILD");
-        // Register child contract address to `contracts` mapping.
-        contracts[child_] = true;
-        // Emit `NewChild` event with child contract address.
-        emit IFactory.NewChild(msg.sender, child_);
-        return child_;
-    }
-
-    /// @inheritdoc Factory
-    function isChild(address maybeChild_)
-        external
-        view
-        virtual
-        override
-        returns (bool)
-    {
-        return contracts[maybeChild_];
     }
 
     /// Typed wrapper around IFactory.createChild.
