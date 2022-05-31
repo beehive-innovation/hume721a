@@ -16,11 +16,11 @@ contract HumeAngelbabyCommunityEP1Factory is Factory, Ownable {
             msg.sender == owner() || msg.sender == address(this),
             "Ownable: caller is not the owner"
         );
-        ConstructorConfig memory config_ = abi.decode(
-            data_,
-            (ConstructorConfig)
-        );
-        child_ = address(new HumeAngelbabyCommunityEP1(config_));
+        // ConstructorConfig memory config_ = abi.decode(
+        //     data_,
+        //     (ConstructorConfig)
+        // );
+        // child_ = address(new HumeAngelbabyCommunityEP1(config_));
     }
 
     /// Typed wrapper around IFactory.createChild.
