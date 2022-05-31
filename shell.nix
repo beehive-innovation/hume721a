@@ -15,6 +15,18 @@ let
     prettier --write .
   '';
 
+  flush-all = pkgs.writeShellScriptBin "flush-all" ''
+    rm -rf artifacts
+    rm -rf cache
+    rm -rf node_modules
+    rm -rf typechain
+    rm -rf bin
+    rm -rf docusaurus/.docusaurus
+    rm -rf docusaurus/build
+    rm -rf docusaurus/node_modules
+    rm -rf docs/api
+  '';
+
   ci-lint = pkgs.writeShellScriptBin "ci-lint" ''
     flush-all
     npm install
@@ -51,6 +63,7 @@ pkgs.stdenv.mkDerivation {
     security-check
     ci-test
     ci-lint
+    flush-all
   ];
 
   shellHook = ''

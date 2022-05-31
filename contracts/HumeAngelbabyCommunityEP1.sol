@@ -112,6 +112,7 @@ contract HumeAngelbabyCommunityEP1 is ERC721A, Ownable, Adminable {
     /// IDs as all metadata for all tokens is identical. WILL error as per spec
     /// if called for a nonexistant tokenID_.
     /// @inheritdoc ERC721A
+    //slither-disable-next-line external-function
     function tokenURI(uint256 tokenId_)
         public
         view
