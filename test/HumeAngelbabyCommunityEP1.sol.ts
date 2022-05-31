@@ -119,7 +119,7 @@ describe("HumeAngelbabyCommunityEP1 test", () => {
   });
 
   describe("multiTransferToEOA test", () => {
-    let humeAngelBaby: HumeAngelbabyCommunityEP1;
+    let humeAngelbaby: HumeAngelbabyCommunityEP1;
     let config: ConstructorConfigStruct;
 
     before(async () => {
@@ -144,43 +144,43 @@ describe("HumeAngelbabyCommunityEP1 test", () => {
         angelBabyFactory
       );
 
-      humeAngelBaby = (await ethers.getContractAt(
+      humeAngelbaby = (await ethers.getContractAt(
         (
           await artifacts.readArtifact("HumeAngelbabyCommunityEP1")
         ).abi,
         child
       )) as HumeAngelbabyCommunityEP1;
 
-      expect(humeAngelBaby.address).to.be.not.null;
+      expect(humeAngelbaby.address).to.be.not.null;
       expect(sender).to.equals(angelBabyFactory.address);
-      expect(humeAngelBaby.address).to.equals(child);
-      expect(await humeAngelBaby.owner()).to.equals(
+      expect(humeAngelbaby.address).to.equals(child);
+      expect(await humeAngelbaby.owner()).to.equals(
         owner.address,
         `Owner is ${angelBaby.owner()} not ${owner.address}`
       );
-      expect(await humeAngelBaby.admin()).to.equals(
+      expect(await humeAngelbaby.admin()).to.equals(
         admin.address,
         `admin is ${angelBaby.admin()} not ${admin.address}`
       );
-      expect(await humeAngelBaby.name()).to.equals(
+      expect(await humeAngelbaby.name()).to.equals(
         config.name,
         `name is ${angelBaby.name()} not ${config.name}`
       );
-      expect(await humeAngelBaby.symbol()).to.equals(
+      expect(await humeAngelbaby.symbol()).to.equals(
         config.symbol,
         `symbol is ${angelBaby.symbol()} not ${config.symbol}`
       );
-      expect(await humeAngelBaby.tokenURI(1)).to.equals(
+      expect(await humeAngelbaby.tokenURI(1)).to.equals(
         config.tokenURI,
         `tokenURI is ${angelBaby.tokenURI(1)} not ${config.tokenURI}`
       );
-      expect(await humeAngelBaby.totalSupply()).to.equals(
+      expect(await humeAngelbaby.totalSupply()).to.equals(
         config.quantity,
         `totalSupply is ${angelBaby.totalSupply()} not ${config.quantity}`
       );
 
-      expect(await humeAngelBaby.ownerOf(1)).to.equals(admin.address);
-      expect(await humeAngelBaby.ownerOf(config.quantity)).to.equals(
+      expect(await humeAngelbaby.ownerOf(1)).to.equals(admin.address);
+      expect(await humeAngelbaby.ownerOf(config.quantity)).to.equals(
         admin.address
       );
     });
@@ -189,7 +189,7 @@ describe("HumeAngelbabyCommunityEP1 test", () => {
       const pathAddresses = path.resolve(__dirname, `../config/addresses.json`);
       const addresses = JSON.parse(fetchFile(pathAddresses));
 
-      const quantity = parseInt(await (await humeAngelBaby.totalSupply())._hex);
+      const quantity = parseInt(await (await humeAngelbaby.totalSupply())._hex);
       const transferTo: TransferToStruct[] = [];
       for (let i = 1; i <= quantity; i++) {
         transferTo.push({
@@ -198,12 +198,12 @@ describe("HumeAngelbabyCommunityEP1 test", () => {
         });
       }
 
-      const transferTx = await humeAngelBaby
+      const transferTx = await humeAngelbaby
         .connect(admin)
         .multiTransferToEOA(transferTo);
 
       for (let i = 0; i < quantity; i++) {
-        expect(await humeAngelBaby.ownerOf(transferTo[i].id)).to.equals(
+        expect(await humeAngelbaby.ownerOf(transferTo[i].id)).to.equals(
           transferTo[i].to
         );
       }
