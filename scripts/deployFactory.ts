@@ -1,6 +1,6 @@
 import hre, { ethers } from "hardhat";
 import path from "path";
-import { fetchFile, writeFile } from "../test/utils";
+import { fetchFile, writeFile } from "../utils";
 import { HumeAngelbabyCommunityEP1 } from "../typechain/HumeAngelbabyCommunityEP1";
 import { HumeAngelbabyCommunityEP1Factory } from "../typechain/HumeAngelbabyCommunityEP1Factory";
 

@@ -1,27 +1,24 @@
-import hre, { artifacts, ethers } from "hardhat";
+import { artifacts, ethers } from "hardhat";
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
 import {
-  ConstructEvent,
-  TokenURIEvent,
-  TransferEvent,
   ConstructorConfigStruct,
   HumeAngelbabyCommunityEP1,
   TransferToStruct
 } from "../typechain/HumeAngelbabyCommunityEP1";
 import { HumeAngelbabyCommunityEP1Factory } from "../typechain/HumeAngelbabyCommunityEP1Factory";
 import { expect } from "chai";
-import { fetchFile, getEventArgs } from "./utils";
 import path from "path";
+import { fetchFile, getEventArgs } from "../utils";
 
 export let angelBaby: HumeAngelbabyCommunityEP1
 export let angelBabyFactory: HumeAngelbabyCommunityEP1Factory
 
 export let admin: SignerWithAddress,
   new_Admin: SignerWithAddress,
-  owner: SignerWithAddress, 
-  new_Owner: SignerWithAddress, 
-  recipient: SignerWithAddress, 
-  factoryOwner: SignerWithAddress, 
+  owner: SignerWithAddress,
+  new_Owner: SignerWithAddress,
+  recipient: SignerWithAddress,
+  factoryOwner: SignerWithAddress,
   newFactoryOwner: SignerWithAddress;
 
 export let ConstructorConfig: ConstructorConfigStruct;
@@ -46,14 +43,14 @@ before(async () => {
 
 describe("HumeAngelbabyCommunityEP1 test", () => {
   describe("HumeAngelbabyCommunityEP1Factory Owner test", () => {
-    it("Should deploy HumeAngelbabyCommunityEP1Factory",async () => {
+    it("Should deploy HumeAngelbabyCommunityEP1Factory", async () => {
       expect(angelBabyFactory.address).to.be.not.null;
     });
-  
-    it("HumeAngelbabyCommunityEP1Factory should be owned by Admin",async () => {
+
+    it("HumeAngelbabyCommunityEP1Factory should be owned by Admin", async () => {
       expect(await angelBabyFactory.owner()).to.equals(factoryOwner.address);
     });
-  
+
     it("Should transfer the ownership to another address.", async () => {
       let ownershipTransferTx = await angelBabyFactory.connect(factoryOwner).transferOwnership(newFactoryOwner.address);
 
@@ -72,8 +69,8 @@ describe("HumeAngelbabyCommunityEP1 test", () => {
       await expect(angelBabyFactory.connect(factoryOwner).createChild(newFactoryOwner.address)).to.revertedWith("Ownable: caller is not the owner");
     });
 
-    it("Owner shopuld be able to create child",async () => {
-      let config: ConstructorConfigStruct= {
+    it("Owner shopuld be able to create child", async () => {
+      let config: ConstructorConfigStruct = {
         name: "ANGELBABY",
         symbol: "AGBB",
         tokenURI: "OLD_TOKEN_URI",
@@ -84,7 +81,7 @@ describe("HumeAngelbabyCommunityEP1 test", () => {
 
       let createChildTx = await angelBabyFactory.connect(newFactoryOwner).createChildTyped(config);
 
-      const {sender, child} = await getEventArgs(createChildTx, "NewChild", angelBabyFactory);
+      const { sender, child } = await getEventArgs(createChildTx, "NewChild", angelBabyFactory);
 
       angelBaby = await ethers.getContractAt((await artifacts.readArtifact("HumeAngelbabyCommunityEP1")).abi, child) as HumeAngelbabyCommunityEP1;
 
@@ -122,7 +119,7 @@ describe("HumeAngelbabyCommunityEP1 test", () => {
       let newTokenURI = "NEW_TOKEN_URI";
       let tokenURITx = await angelBaby.connect(admin).adminSetTokenURI(newTokenURI);
 
-      const {sender , tokenURI} = await getEventArgs(tokenURITx, "TokenURI", angelBaby);
+      const { sender, tokenURI } = await getEventArgs(tokenURITx, "TokenURI", angelBaby);
 
       expect(sender).to.be.equals(admin.address);
       expect(tokenURI).to.be.equals(newTokenURI);
@@ -133,7 +130,7 @@ describe("HumeAngelbabyCommunityEP1 test", () => {
     it("Admin should be able to change owner", async () => {
       let ownerTx = await angelBaby.connect(admin).adminSetOwner(new_Owner.address);
 
-      const {previousOwner , newOwner} = await getEventArgs(ownerTx, "OwnershipTransferred", angelBaby);
+      const { previousOwner, newOwner } = await getEventArgs(ownerTx, "OwnershipTransferred", angelBaby);
 
       expect(await angelBaby.owner()).to.be.equals(newOwner);
       expect(previousOwner).to.be.equals(owner.address);
@@ -170,7 +167,7 @@ describe("HumeAngelbabyCommunityEP1 test", () => {
     });
 
     it("Should deploy Child angelbaby contract", async () => {
-      const {sender, child} = await getEventArgs(createChildTx, "NewChild", angelBabyFactory);
+      const { sender, child } = await getEventArgs(createChildTx, "NewChild", angelBabyFactory);
 
       humeAngelBaby = await ethers.getContractAt((await artifacts.readArtifact("HumeAngelbabyCommunityEP1")).abi, child) as HumeAngelbabyCommunityEP1;
 
@@ -188,7 +185,7 @@ describe("HumeAngelbabyCommunityEP1 test", () => {
       expect(await humeAngelBaby.ownerOf(config.quantity)).to.equals(admin.address);
     });
 
-    it("Should transfer all tokens",async () => {
+    it("Should transfer all tokens", async () => {
       const pathAddresses = path.resolve(__dirname, `../config/addresses.json`);
       const addresses = JSON.parse(fetchFile(pathAddresses));
 
@@ -197,7 +194,7 @@ describe("HumeAngelbabyCommunityEP1 test", () => {
       for (let i = 1; i <= quantity; i++) {
         transferTo.push({
           id: i,
-          to: addresses[i-1]
+          to: addresses[i - 1]
         });
       }
 
