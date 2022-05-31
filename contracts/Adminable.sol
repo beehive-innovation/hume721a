@@ -15,6 +15,7 @@ pragma solidity ^0.8.0;
 /// then the admin MUST be able to recover the owner by setting it directly to
 /// a known good uncompromised wallet.
 abstract contract Adminable {
+    /// Singleton admin address. Analogous to Open Zeppelin owner.
     address public admin;
 
     event AdminTransferred(address indexed previousAdmin, address indexed newAdmin);

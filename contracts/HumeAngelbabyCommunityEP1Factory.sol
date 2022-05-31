@@ -4,6 +4,10 @@ pragma solidity ^0.8.0;
 import "./HumeAngelbabyCommunityEP1.sol";
 import "@beehiveinnovation/rain-protocol/contracts/factory/Factory.sol";
 
+/// @title HumeAngelbabyCommunityEP1Factory
+/// @notice Standard non-cloning Rain Factory with additional ownership access
+/// control as per Open Zeppelin. Only owner may create children. The factory
+/// owner is distinct from the owners/admins passed as config to the children.
 contract HumeAngelbabyCommunityEP1Factory is Factory, Ownable {
     /// @inheritdoc Factory
     function _createChild(bytes calldata data_)
