@@ -78,37 +78,37 @@ describe("tokenURI tests", () => {
 
     it("Should return the correct tokenURI after intialization", async () => {
         const tokenUri = await humeAngelBaby.connect(admin).tokenURI(1);
-        expect(tokenUri).to.equal(config.baseURI)
+        expect(tokenUri).to.equal(`${config.baseURI}1`)
     });
 
     it("Should return the correct tokenURI after being updated", async () => {
-        const newTokenURI = "NEW_TOKEN_URI"
-        await humeAngelBaby.connect(admin).adminSetTokenURI(newTokenURI);
+        const newBaseURI = "NEW_TOKEN_URI"
+        await humeAngelBaby.connect(admin).adminSetBaseURI(newBaseURI);
         const tokenUri = await humeAngelBaby.connect(admin).tokenURI(1);
-        expect(tokenUri).to.equal(newTokenURI)
+        expect(tokenUri).to.equal(`${newBaseURI}1`)
     });
 
     it("Should revert when calling tokenURI() for a non-existent id", async () => {
         await expect(humeAngelBaby.connect(admin).tokenURI(quantity + 1)).revertedWith("URIQueryForNonexistentToken()")
     });
 
-    it("Shouldn't enforce any format when setting tokenURI", async () => {
+    it("Shouldn't enforce any format when setting baseURI", async () => {
 
-        let tokenUri: string, newTokenURI: string
+        let tokenURI: string, newBaseURI: string
 
-        newTokenURI = "http://google.com"
-        await humeAngelBaby.connect(admin).adminSetTokenURI(newTokenURI);
-        tokenUri = await humeAngelBaby.connect(admin).tokenURI(1);
-        expect(tokenUri).to.equal(newTokenURI)
+        newBaseURI = "http://google.com"
+        await humeAngelBaby.connect(admin).adminSetBaseURI(newBaseURI);
+        tokenURI = await humeAngelBaby.connect(admin).tokenURI(1);
+        expect(tokenURI).to.equal(`${newBaseURI}1`)
 
-        newTokenURI = "ipfs://QmPvjoUdAJVZMVACLqj77wsrQyaJVu9VpKdDRHvFK5cLzR"
-        await humeAngelBaby.connect(admin).adminSetTokenURI(newTokenURI);
-        tokenUri = await humeAngelBaby.connect(admin).tokenURI(1);
-        expect(tokenUri).to.equal(newTokenURI)
+        newBaseURI = "ipfs://QmPvjoUdAJVZMVACLqj77wsrQyaJVu9VpKdDRHvFK5cLzR"
+        await humeAngelBaby.connect(admin).adminSetBaseURI(newBaseURI);
+        tokenURI = await humeAngelBaby.connect(admin).tokenURI(1);
+        expect(tokenURI).to.equal(`${newBaseURI}1`)
 
-        newTokenURI = "Some other string"
-        await humeAngelBaby.connect(admin).adminSetTokenURI(newTokenURI);
-        tokenUri = await humeAngelBaby.connect(admin).tokenURI(1);
-        expect(tokenUri).to.equal(newTokenURI)
+        newBaseURI = "Some other string"
+        await humeAngelBaby.connect(admin).adminSetBaseURI(newBaseURI);
+        tokenURI = await humeAngelBaby.connect(admin).tokenURI(1);
+        expect(tokenURI).to.equal(`${newBaseURI}1`)
     })
 });

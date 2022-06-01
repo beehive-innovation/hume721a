@@ -74,10 +74,10 @@ describe("HumeAngelbabyCommunityEP1 Admin test", () => {
   });
 
   it("Admin should be able to change tokenUri", async () => {
-    const newTokenURI = "NEW_TOKEN_URI";
+    const newBaseURI = "NEW_TOKEN_URI";
     const baseURITx = await humeAngelBaby
       .connect(admin)
-      .adminSetTokenURI(newTokenURI);
+      .adminSetBaseURI(newBaseURI);
 
     const { sender, baseURI } = await getEventArgs(
       baseURITx,
@@ -86,22 +86,22 @@ describe("HumeAngelbabyCommunityEP1 Admin test", () => {
     );
 
     expect(sender).to.be.equals(admin.address);
-    expect(baseURI).to.be.equals(newTokenURI);
+    expect(baseURI).to.be.equals(newBaseURI);
     expect(await humeAngelBaby.tokenURI(1)).to.equals(
-      newTokenURI,
-      `tokenURI is ${humeAngelBaby.tokenURI(2)} not ${newTokenURI}`
+      `${newBaseURI}1`,
+      `tokenURI is ${humeAngelBaby.tokenURI(2)} not ${newBaseURI}1`
     );
   });
 
   it("Owner should not be able to change tokenUri", async () => {
     await expect(
-      humeAngelBaby.connect(owner).adminSetTokenURI("NEW_TOKEN_URI")
+      humeAngelBaby.connect(owner).adminSetBaseURI("NEW_TOKEN_URI")
     ).to.revertedWith("Adminable: caller is not the admin");
   });
 
   it("A signer that is neither Owner or Admin should not be able to change tokenUri", async () => {
     await expect(
-      humeAngelBaby.connect(recipient).adminSetTokenURI("NEW_TOKEN_URI")
+      humeAngelBaby.connect(recipient).adminSetBaseURI("NEW_TOKEN_URI")
     ).to.revertedWith("Adminable: caller is not the admin");
   });
 

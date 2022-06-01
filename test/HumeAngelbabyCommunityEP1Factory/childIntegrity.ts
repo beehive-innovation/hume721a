@@ -3,6 +3,7 @@ import { HumeAngelbabyCommunityEP1 } from "../../typechain/HumeAngelbabyCommunit
 import { expect } from "chai";
 
 export const checkChildIntegrity = async (angelBabyFactory, child, config) => {
+  console.log(config)
   const angelBaby = (await ethers.getContractAt(
     (
       await artifacts.readArtifact("HumeAngelbabyCommunityEP1")
@@ -29,8 +30,8 @@ export const checkChildIntegrity = async (angelBabyFactory, child, config) => {
     `symbol is ${angelBaby.symbol()} not ${config.symbol}`
   );
   expect(await angelBaby.tokenURI(1)).to.equals(
-    config.tokenURI,
-    `tokenURI is ${angelBaby.tokenURI(2)} not ${config.tokenURI}`
+    `${config.baseURI}1`,
+    `tokenURI is ${angelBaby.tokenURI(1)} not ${config.baseURI}1`
   );
   expect(await angelBaby.totalSupply()).to.equals(
     config.quantity,
