@@ -3,7 +3,6 @@ import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
 import {
   ConstructorConfigStruct,
   HumeAngelbabyCommunityEP1,
-  TransferToStruct,
 } from "../../typechain/HumeAngelbabyCommunityEP1";
 import { HumeAngelbabyCommunityEP1Factory } from "../../typechain/HumeAngelbabyCommunityEP1Factory";
 import { expect } from "chai";
