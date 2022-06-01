@@ -71,6 +71,15 @@ const config: HardhatUserConfig = {
         }`,
       ],
     },
+    ethereum: {
+      url: `https://mainnet.infura.io/v3/${process.env.API_KEY || ""}`,
+      accounts: [
+        `0x${
+          process.env.PRIVATE_KEY ||
+          "0000000000000000000000000000000000000000000000000000000000000000"
+        }`,
+      ],
+    },
   },
   mocha: {
     timeout: 600000,
