@@ -49,7 +49,7 @@ describe("HumeAngelbabyCommunityEP1 Admin test", () => {
     config = {
       name: "ANGELBABY",
       symbol: "AGBB",
-      tokenURI: "OLD_TOKEN_URI",
+      baseURI: "OLD_BASE_URI",
       quantity: 50,
       admin: admin.address,
       owner: owner.address,
@@ -75,18 +75,18 @@ describe("HumeAngelbabyCommunityEP1 Admin test", () => {
 
   it("Admin should be able to change tokenUri", async () => {
     const newTokenURI = "NEW_TOKEN_URI";
-    const tokenURITx = await humeAngelBaby
+    const baseURITx = await humeAngelBaby
       .connect(admin)
       .adminSetTokenURI(newTokenURI);
 
-    const { sender, tokenURI } = await getEventArgs(
-      tokenURITx,
-      "TokenURI",
+    const { sender, baseURI } = await getEventArgs(
+      baseURITx,
+      "BaseURI",
       humeAngelBaby
     );
 
     expect(sender).to.be.equals(admin.address);
-    expect(tokenURI).to.be.equals(newTokenURI);
+    expect(baseURI).to.be.equals(newTokenURI);
     expect(await humeAngelBaby.tokenURI(1)).to.equals(
       newTokenURI,
       `tokenURI is ${humeAngelBaby.tokenURI(2)} not ${newTokenURI}`

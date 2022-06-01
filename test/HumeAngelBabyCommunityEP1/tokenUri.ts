@@ -46,7 +46,7 @@ describe("tokenURI tests", () => {
         config = {
             name: "ANGELBABY",
             symbol: "AGBB",
-            tokenURI: "OLD_TOKEN_URI",
+            baseURI: "OLD_BASE_URI",
             quantity: 50,
             admin: admin.address,
             owner: owner.address,
@@ -78,7 +78,7 @@ describe("tokenURI tests", () => {
 
     it("Should return the correct tokenURI after intialization", async () => {
         const tokenUri = await humeAngelBaby.connect(admin).tokenURI(1);
-        expect(tokenUri).to.equal(config.tokenURI)
+        expect(tokenUri).to.equal(config.baseURI)
     });
 
     it("Should return the correct tokenURI after being updated", async () => {

@@ -27,7 +27,7 @@ async function main() {
   const config = {
     name: "ANGELBABY",
     symbol: "AGBB",
-    tokenURI: "OLD_TOKEN_URI",
+    baseURI: "OLD_BASE_URI",
     quantity: 50,
     admin: "0xB77d30571fc6C253e645584D4deEF40c139A7900",
     owner: "0x36c0903Ad6D564F335333344Fab68ebCf736F629",

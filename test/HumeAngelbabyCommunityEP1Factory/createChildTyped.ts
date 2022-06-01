@@ -38,7 +38,7 @@ it("Owner should be able to create child typed", async () => {
   const config: ConstructorConfigStruct = {
     name: "ANGELBABY",
     symbol: "AGBB",
-    tokenURI: "OLD_TOKEN_URI",
+    baseURI: "OLD_BASE_URI",
     quantity: 100,
     admin: admin.address,
     owner: owner.address,
@@ -62,7 +62,7 @@ it("Non owner should NOT be able to create child typed", async () => {
   const config: ConstructorConfigStruct = {
     name: "ANGELBABY",
     symbol: "AGBB",
-    tokenURI: "OLD_TOKEN_URI",
+    baseURI: "OLD_BASE_URI",
     quantity: 100,
     admin: admin.address,
     owner: owner.address,

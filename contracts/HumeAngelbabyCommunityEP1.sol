@@ -8,14 +8,14 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 /// Everything required for construction.
 /// @param name The ERC721 name.
 /// @param symbol The ERC721 symbol.
-/// @param tokenURI The initial ERC721 tokenURI (can be modified by admin).
+/// @param baseURI The initial ERC721 baseURI (can be modified by admin).
 /// @param quantity The number of tokens to mint on construction.
 /// @param admin The initial admin address (onchain administration).
 /// @param owner The initial owner address (offchain administration).
 struct ConstructorConfig {
     string name;
     string symbol;
-    string tokenURI;
+    string baseURI;
     uint256 quantity;
     address admin;
     address owner;
@@ -32,18 +32,18 @@ struct TransferTo {
 /// @title HumeAngelbabyCommunityEP1
 /// @notice Represents a single from the first HumeAngelbaby EP.
 contract HumeAngelbabyCommunityEP1 is ERC721A, Ownable, Adminable {
-    /// @dev The current token URI returned by tokenURI().
-    string private _tokenURI;
+    /// @dev set by admin and read by ERC721A._baseURI
+    string private baseURI;
 
     /// Emitted when contract is constructed.
     /// @param sender the `msg.sender` that deploys the contract.
     /// @param config All config used by the constructor.
     event Construct(address sender, ConstructorConfig config);
 
-    /// Emitted when the token URI is changed by the admin.
-    /// @param sender the `msg.sender` (admin) that sets the token URI.
-    /// @param tokenURI the new token URI.
-    event TokenURI(address sender, string tokenURI);
+    /// Emitted when the base URI is changed by the admin.
+    /// @param sender the `msg.sender` (admin) that sets the base URI.
+    /// @param baseURI the new base URI.
+    event BaseURI(address sender, string baseURI);
 
     /// Token constructor.
     /// Assigns owner and admin roles, mints all tokens for the admin and sets
@@ -59,18 +59,18 @@ contract HumeAngelbabyCommunityEP1 is ERC721A, Ownable, Adminable {
         // Mint all tokens for the admin.
         _safeMint(config_.admin, config_.quantity);
 
-        // Set URI.
-        _tokenURI = config_.tokenURI;
+        // Set initial baseURI.
+        baseURI = config_.baseURI;
 
         // Inform the world.
         emit Construct(msg.sender, config_);
     }
 
     /// Admin MAY set a new token URI at any time.
-    /// @param tokenURI_ The new token URI for ALL tokens.
-    function adminSetTokenURI(string memory tokenURI_) external onlyAdmin {
-        _tokenURI = tokenURI_;
-        emit TokenURI(msg.sender, tokenURI_);
+    /// @param baseURI_ The new token URI for ALL tokens.
+    function adminSetTokenURI(string memory baseURI_) external onlyAdmin {
+        baseURI = baseURI_;
+        emit BaseURI(msg.sender, baseURI_);
     }
 
     /// Admin MAY set a new owner at any time.
@@ -109,19 +109,8 @@ contract HumeAngelbabyCommunityEP1 is ERC721A, Ownable, Adminable {
         return 1;
     }
 
-    /// Override the 721A tokenURI to remove the string concatenation of token
-    /// IDs as all metadata for all tokens is identical. WILL error as per spec
-    /// if called for a nonexistant tokenID_.
     /// @inheritdoc ERC721A
-    //slither-disable-next-line external-function
-    function tokenURI(uint256 tokenId_)
-        public
-        view
-        virtual
-        override
-        returns (string memory)
-    {
-        if (!_exists(tokenId_)) revert URIQueryForNonexistentToken();
-        return _tokenURI;
+    function _baseURI() internal view override returns (string memory baseURI_) {
+        baseURI_ = baseURI;
     }
 }
