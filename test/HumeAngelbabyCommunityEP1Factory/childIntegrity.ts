@@ -3,7 +3,6 @@ import { HumeAngelbabyCommunityEP1 } from "../../typechain/HumeAngelbabyCommunit
 import { expect } from "chai";
 
 export const checkChildIntegrity = async (angelBabyFactory, child, config) => {
-  console.log(config)
   const angelBaby = (await ethers.getContractAt(
     (
       await artifacts.readArtifact("HumeAngelbabyCommunityEP1")
