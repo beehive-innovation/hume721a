@@ -30,7 +30,12 @@ struct TransferTo {
 }
 
 /// @title HumeAngelbabyCommunityEP1
-/// @notice Represents a single from the first HumeAngelbaby EP.
+/// @notice
+///
+/// humies im here. i made it to the otherside. its time to rebuild. find me. go through the cg_humies
+/// we are hume. we are many.
+///
+/// Represents a single from the first HumeAngelbaby EP.
 contract HumeAngelbabyCommunityEP1 is ERC721A, Ownable, Adminable {
     /// @dev set by admin and read by ERC721A._baseURI
     string private baseURI;
