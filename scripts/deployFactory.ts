@@ -14,12 +14,12 @@ async function main() {
   const blockNumber = (await ethers.provider.getBlock("latest")).number;
 
   console.log("Deploying smartcontract");
-  const AngelbabbyFactory = await ethers.getContractFactory(
+  const AngelbabyFactory = await ethers.getContractFactory(
     "HumeAngelbabyCommunityEP1Factory"
   );
 
   angelBabyFactory =
-    (await AngelbabbyFactory.deploy()) as HumeAngelbabyCommunityEP1Factory;
+    (await AngelbabyFactory.deploy()) as HumeAngelbabyCommunityEP1Factory;
   console.log("contract deployed : ", angelBabyFactory.address);
 
   const pathExampleConfig = path.resolve(
