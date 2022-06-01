@@ -80,6 +80,13 @@ describe("tokenURI tests", () => {
     expect(tokenUri).to.equal(`${config.baseURI}1`);
   });
 
+  it("Should return the correct tokenURI pattern for each id", async () => {
+    for (let i = 1; i < quantity; i++) {
+      const tokenUri = await humeAngelBaby.connect(admin).tokenURI(i);
+      expect(tokenUri).to.equal(`${config.baseURI}${i}`);
+    }
+  });
+
   it("Should return the correct tokenURI after being updated", async () => {
     const newBaseURI = "NEW_TOKEN_URI";
     await humeAngelBaby.connect(admin).adminSetBaseURI(newBaseURI);
