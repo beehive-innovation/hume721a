@@ -33,14 +33,14 @@ beforeEach(async () => {
   config = {
     name: "ANGELBABY",
     symbol: "AGBB",
-    tokenURI: "OLD_TOKEN_URI",
+    baseURI: "OLD_BASE_URI",
     quantity: 100,
     admin: admin.address,
     owner: owner.address,
   };
   encodedConfig = ethers.utils.defaultAbiCoder.encode(
     [
-      "tuple(string name, string symbol, string tokenURI, uint256 quantity, address admin, address owner)",
+      "tuple(string name, string symbol, string baseURI, uint256 quantity, address admin, address owner)",
     ],
     [config]
   );
@@ -50,7 +50,7 @@ it("Owner should be able to create child", async () => {
   const config: ConstructorConfigStruct = {
     name: "ANGELBABY",
     symbol: "AGBB",
-    tokenURI: "OLD_TOKEN_URI",
+    baseURI: "OLD_BASE_URI",
     quantity: 100,
     admin: admin.address,
     owner: owner.address,

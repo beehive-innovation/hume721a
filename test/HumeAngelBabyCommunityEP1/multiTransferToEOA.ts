@@ -46,7 +46,7 @@ describe("multiTransferToEOA test", () => {
     config = {
       name: "ANGELBABY",
       symbol: "AGBB",
-      tokenURI: "OLD_TOKEN_URI",
+      baseURI: "OLD_BASE_URI",
       quantity: 50,
       admin: admin.address,
       owner: owner.address,
